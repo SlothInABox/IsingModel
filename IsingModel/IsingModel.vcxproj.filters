@@ -21,9 +21,15 @@
     <ClCompile Include="src\IsingModel\FIsingModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\IsingModel\FNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\IsingModel\FIsingModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IsingModel\FNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

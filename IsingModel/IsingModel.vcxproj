@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\IsingModel\FNode.cpp" />
     <ClCompile Include="src\IsingModel\FIsingModel.cpp" />
     <ClCompile Include="src\IsingModel\IsingModel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\IsingModel\FNode.h" />
     <ClInclude Include="src\IsingModel\FIsingModel.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
