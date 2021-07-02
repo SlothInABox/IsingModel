@@ -25,6 +25,8 @@ public:
 
 	void FlipSpin();
 
+	void SetSpin(const int& NewSpin);
+
 	int GetSpin();
 
 	int GetEnergy();

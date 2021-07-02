@@ -33,5 +33,24 @@ protected:
 	std::string SpinHistory;
 
 	// Method for flipping a random spin
+	virtual void FlipRandom();
+};
+
+class FGlauberModel : public FIsingModel
+{
+public:
+	using FIsingModel::FIsingModel;
+
+protected:
 	void FlipRandom();
+};
+
+class FKawasakiModel : public FIsingModel
+{
+public:
+	using FIsingModel::FIsingModel;
+
+protected:
+	void FlipRandom();
+
 };

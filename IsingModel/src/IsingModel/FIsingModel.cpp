@@ -48,29 +48,26 @@ FIsingModel::FIsingModel(const int& N, const double& T) : LatticeSize(N), Temper
 
 std::string FIsingModel::OutputSpins()
 {
-	for (size_t i = 0; i < LatticeSize; i++)
+	std::string OutputSpins;
+	for (size_t i = 0; i < Lattice.size(); i++)
 	{
-		for (size_t j = 0; j < LatticeSize; j++)
+		if ((i != 0) && (i % LatticeSize == 0))
 		{
-			FNode* Node = &Lattice[i + LatticeSize * j];
-			std::cout << Node->GetSpin();
+			OutputSpins += "\n";
 		}
-		std::cout << std::endl;
+		int Spin = Lattice[i].GetSpin();
+		if (Spin > 0)
+		{
+			OutputSpins += "+";
+		}
+		OutputSpins += std::to_string(Spin) + " ";
 	}
-	return std::string("NONE");
+	return OutputSpins;
 }
 
 void FIsingModel::FlipRandom()
 {
-	// Select random node for flipping
-	FNode* Node = &Lattice[std::rand() % LatticeSize * LatticeSize];
-	// Get the energy change from this flip
-	int EnergyChange = Node->GetEnergyChange();
 
-	if ((EnergyChange <= 0) || (std::rand() < exp(-EnergyChange / Temperature)))
-	{
-		Node->FlipSpin();
-	}
 }
 
 void FIsingModel::Update()
@@ -85,6 +82,7 @@ void FIsingModel::Update()
 double FIsingModel::GetTotalEnergy()
 {
 	double TotalEnergy = 0.0;
+	
 	for (FNode& Node : Lattice)
 	{
 		TotalEnergy += Node.GetEnergy();
@@ -105,5 +103,46 @@ int FIsingModel::GetMagnetization()
 #pragma endregion
 
 #pragma region FGlauberModel
+void FGlauberModel::FlipRandom()
+{
+	// Select random node for flipping
+	FNode* Node = &Lattice[std::rand() % LatticeSize * LatticeSize];
+	// Get the energy change from this flip
+	int EnergyChange = Node->GetEnergyChange();
 
+	if ((EnergyChange <= 0) || (std::rand() < exp(-EnergyChange / Temperature)))
+	{
+		Node->FlipSpin();
+	}
+}
+#pragma endregion
+
+#pragma region FKawasakiModel
+void FKawasakiModel::FlipRandom()
+{
+	// Select random node for flipping
+	FNode* Node = &Lattice[std::rand() % LatticeSize * LatticeSize];
+	// Other node
+	FNode* OtherNode = &Lattice[std::rand() % LatticeSize * LatticeSize];
+	// Ensure that the nodes are distinct
+	while (Node == OtherNode)
+	{
+		OtherNode = &Lattice[std::rand() % LatticeSize * LatticeSize];
+	}
+
+	// If they have the same spin then switching wont make a difference
+	if (Node->GetSpin() != OtherNode->GetSpin())
+	{
+		// Flip first spin and get energy change
+		int EnergyChange = Node->GetEnergyChange();
+		// Flip second spin and add to energy change
+		EnergyChange += OtherNode->GetEnergyChange();
+
+		if ((EnergyChange <= 0) || (std::rand() < exp(-EnergyChange / Temperature)))
+		{
+			Node->FlipSpin();
+			OtherNode->FlipSpin();
+		}
+	}
+}
 #pragma endregion

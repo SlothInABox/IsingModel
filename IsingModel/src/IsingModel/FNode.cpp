@@ -33,18 +33,24 @@ void FNode::AddNeighbour(FNode* Node)
 
 int FNode::GetEnergyChange()
 {
-	int EnergyChange = -2 * Spin;
+	int EnergyChange = 0;
 
 	for (FNode* NearestNeighbour : NearestNeighbours)
 	{
 		EnergyChange += NearestNeighbour->GetSpin();
 	}
+	EnergyChange *= -2 * Spin;
 	return EnergyChange;
 }
 
 void FNode::FlipSpin()
 {
 	Spin *= -1;
+}
+
+void FNode::SetSpin(const int& NewSpin)
+{
+	Spin = NewSpin;
 }
 
 int FNode::GetSpin()
@@ -54,12 +60,13 @@ int FNode::GetSpin()
 
 int FNode::GetEnergy()
 {
-	int Energy = Spin;
+	int Energy = 0;
 
 	for (FNode* NearestNeighbour : NearestNeighbours)
 	{
 		Energy += NearestNeighbour->Spin;
 	}
+	Energy *= -Spin;
 	return Energy;
 }
 

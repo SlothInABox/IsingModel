@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include <random>
 #include "FIsingModel.h"
@@ -18,17 +19,27 @@ int main()
 	std::cout << "Enter number of steps: ";
 	std::cin >> NumSteps;
 
-	FIsingModel* IsingModel = new FIsingModel(NumDimensions, Temperature);
+	// Output animation data
+	std::string AnimationOutput;
+
+	FGlauberModel* GlauberModel = new FGlauberModel(NumDimensions, Temperature);
 
 	// Iterate over the number of steps
 	for (size_t t = 0; t < NumSteps + 1; t++)
 	{
-		IsingModel->Update();
+		GlauberModel->Update();
 		if ((t > 0) && (t % 10 == 0))
 		{
-			IsingModel->GetMagnetization();
+			AnimationOutput += GlauberModel->OutputSpins() + "\n\n\n";
 		}
 	}
 
-	delete IsingModel;
+	// Save animation output to a file
+	std::string AnimationPath = "animation.txt";
+	std::ofstream AnimationFile;
+	AnimationFile.open(AnimationPath);
+	AnimationFile << AnimationOutput;
+	AnimationFile.close();
+
+	delete GlauberModel;
 }
